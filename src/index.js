@@ -1,7 +1,9 @@
 
-// import * as THREE from '.././node_modules/three/src/Three.js';
-import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.js';
+"use strict"
 
+import * as THREE from '.././node_modules/three/src/Three.js';
+
+main();
 
 function main() {
     
@@ -12,20 +14,39 @@ function main() {
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 5);
-    camera.position.z = -2;
+    camera.position.z = 4;
 
-    const light = new THREE.DirectionalLight(0xfff, 2);
-    light.position.set(1, 2, -3);
+    const light = new THREE.DirectionalLight(0xfff, 1);
+    light.position.set(-1, 2, 4);
     scene.add(light);
+  
 
     const geometry = new THREE.TorusBufferGeometry(1);
     const material = new THREE.MeshPhongMaterial({
-        color: 0x404040,
+        color: 0xff00aa,
     });
 
     const mesh = new THREE.Mesh(geometry, material);
 
     scene.add(mesh);
 
-    renderer.render(scene, camera);
+    /**
+     * 
+     * @param {number} time - time from requestAnimationFrame
+     */
+    function animate(time) {
+        requestAnimationFrame(animate);
+        time *= 0.001;
+
+        mesh.rotation.x = time;
+        mesh.rotation.z = time;
+
+
+        renderer.render(scene, camera);
+        
+    }
+    requestAnimationFrame(animate);
 }
+
+
+
