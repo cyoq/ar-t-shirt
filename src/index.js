@@ -1,13 +1,16 @@
 
 "use strict"
 
-import * as THREE from '.././node_modules/three/src/Three.js';
+import { $ } from './utils.js'
+import * as THREE from 'three';
+import {AFrame} from 'aframe';
+import * as AFrameAR from 'aframe-ar';
 
-main();
+//main();
 
 function main() {
-    
-    const canvas =  document.getElementById('canvas');
+
+    const canvas =  $('canvas');
 
     const renderer = new THREE.WebGLRenderer( {canvas} );
 

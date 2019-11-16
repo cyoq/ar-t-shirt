@@ -8,7 +8,7 @@ module.exports = {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].bundle.js',
-      chunkFilename: 'vendors.bundle.js',
+      chunkFilename: 'vendor.bundle.js',
     },
     optimization: {
       splitChunks: {
