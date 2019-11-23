@@ -2,6 +2,7 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackInjectPlugin = require('html-webpack-inject-plugin').default;
 
 module.exports = {
     mode: 'production',
@@ -58,6 +59,26 @@ module.exports = {
             title: "AR bundle",
             template: "./src/templates/index.html",
             filename: "./../index.html"
+        }),
+        new HtmlWebpackInjectPlugin({
+          externals: [
+            {
+              tag: 'script',
+              attrs: {
+                src: './src/app/libs/aframe.min.js',
+                type: 'text/javascript'
+              }
+            },
+            {
+              tag: 'script',
+              attrs: {
+                src: './src/app/libs/aframe-ar.min.js',
+                type: 'text/javascript'
+              }
+            }
+          ],
+          parent: 'head', // default is head
+          prepend: true // default is false
         })
     ],
     node: {fs: 'empty'}, 

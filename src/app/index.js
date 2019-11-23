@@ -5,10 +5,11 @@ import './../styles/main.css';
 import Hiro from './../../data/patterns/hiro.patt';
 import CameraParam from './../../data/camera_para.dat';
 // import $ from './utils.js';
+import * as signals from 'signals';
 import * as THREE from 'three';
-// import 'aframe';
-import './libs/aframe.min.js';
-import './libs/aframe-ar.min.js';
+import * as AFRAME from 'aframe';
+// import './libs/aframe.min.js';
+// import './libs/aframe-ar.min.js';
 
 // import * as aframe from './libs/aframe-ar.js';
 // import * as ARController from 'jsartoolkit5';

@@ -2,6 +2,7 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackInjectPlugin = require('html-webpack-inject-plugin').default;
 
 
 
@@ -59,10 +60,12 @@ module.exports = {
   },
   devServer: {
     https: true,
-    contentBase: "./src/templates",
+    hot: true,
+    contentBase: "./src/",
     historyApiFallback: true,
     host: '0.0.0.0',
     port: 8080,
+    publicPath: '/',
     watchOptions: {
       aggregateTimeout: 300,
       poll: 1000,
@@ -74,7 +77,28 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "AR bundle",
       template: "./src/templates/index.html",
-      
+      inject:'head',
+    }),
+    new HtmlWebpackInjectPlugin({
+      externals: [
+        // {
+        //   tag: 'script',
+        //   attrs: {
+        //     src: './app/libs/aframe.min.js',
+        //     type: 'text/javascript'
+        //   }
+        // },
+        {
+          tag: 'script',
+          attrs: {
+            src: './app/libs/aframe-ar.min.js',
+            type: 'text/javascript'
+          }
+        }
+        
+      ],
+      parent: 'head', // default is head
+      prepend: false // default is false
     })
   ],
   node: {fs: 'empty'}, 
