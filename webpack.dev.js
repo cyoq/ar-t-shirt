@@ -3,17 +3,21 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInjectPlugin = require('html-webpack-inject-plugin').default;
+const HtmlWebpackInjector = require('html-webpack-injector');
 
 
 
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
-  entry: path.resolve(__dirname, 'src/app/index.js'),
+  entry: {
+    main: path.resolve(__dirname, 'src/app/index.js'),
+    aframe_head: path.resolve(__dirname, 'src/app/aframe_import.js')
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
-    chunkFilename: 'vendor.bundle.js',
+    chunkFilename: '[name].vendor.bundle.js',
     publicPath: '/',
   },
  
@@ -77,21 +81,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "AR bundle",
       template: "./src/templates/index.html",
-      inject:'head',
     }),
+    new HtmlWebpackInjector(),
     new HtmlWebpackInjectPlugin({
       externals: [
-        // {
-        //   tag: 'script',
-        //   attrs: {
-        //     src: './app/libs/aframe.min.js',
-        //     type: 'text/javascript'
-        //   }
-        // },
         {
           tag: 'script',
           attrs: {
-            src: './app/libs/aframe-ar.min.js',
+            src: './app/libs/aframe-ar.js',
             type: 'text/javascript'
           }
         }
@@ -99,7 +96,7 @@ module.exports = {
       ],
       parent: 'head', // default is head
       prepend: false // default is false
-    })
+    }),
   ],
   node: {fs: 'empty'}, 
 };

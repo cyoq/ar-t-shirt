@@ -3,14 +3,19 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInjectPlugin = require('html-webpack-inject-plugin').default;
+const HtmlWebpackInjector = require('html-webpack-injector');
 
 module.exports = {
     mode: 'production',
-    entry: path.resolve(__dirname, 'src/app/index.js'),
+    entry: {
+      main: path.resolve(__dirname, 'src/app/index.js'),
+      aframe_head: path.resolve(__dirname, 'src/app/aframe_import.js')
+    },
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name].bundle.js',
-        chunkFilename: 'vendor.bundle.js',
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].bundle.js',
+      chunkFilename: '[name].vendor.bundle.js',
+      publicPath: '/',
     },
     module: {
         rules: [
@@ -60,25 +65,19 @@ module.exports = {
             template: "./src/templates/index.html",
             filename: "./../index.html"
         }),
+        new HtmlWebpackInjector(),
         new HtmlWebpackInjectPlugin({
           externals: [
             {
               tag: 'script',
               attrs: {
-                src: './src/app/libs/aframe.min.js',
-                type: 'text/javascript'
-              }
-            },
-            {
-              tag: 'script',
-              attrs: {
-                src: './src/app/libs/aframe-ar.min.js',
+                src: './src/app/libs/aframe-ar.js',
                 type: 'text/javascript'
               }
             }
           ],
           parent: 'head', // default is head
-          prepend: true // default is false
+          prepend: false // default is false
         })
     ],
     node: {fs: 'empty'}, 

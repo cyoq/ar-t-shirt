@@ -3,21 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <!-- <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script> -->
-    <!-- <script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.8/aframe/build/aframe-ar.js"></script> -->
-    <!-- <script type="module">
-        import "./src/app/libs/aframe-ar.min.js";
-    </script> -->
-    <!-- <script src="./app/libs/aframe.min.js"></script> -->
-    <!-- <script src="./app/libs/aframe-ar.min.js"></script> -->
+    
 </head>
 
 <body>
 
-    <a-scene embedded arjs="sourceType: webcam;">
+    <a-scene embedded arjs="sourceType: webcam;" stats>
         <a-marker preset="hiro">
             <a-box position='0 0.5 0' material='color: yellow;'></a-box>
         </a-marker>
