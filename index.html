@@ -6,22 +6,40 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <script type="text/javascript" src="dist/vendors~aframe_head.vendor.bundle.js"></script>
+
+    <script type="text/javascript" src="dist/vendors~aframe_head.vendor.bundle.js">
+    </script>
     <script type="text/javascript" src="dist/aframe_head.bundle.js"></script>
-    <script src="./src/app/libs/aframe-ar.js" type="text/javascript"></script></head>
+    <script src="./src/app/libs/aframe-ar.js" type="text/javascript"></script>
+</head>
 
 <body>
 
-    <a-scene embedded arjs="sourceType: webcam;" stats>
-        <a-marker preset="hiro">
-            <a-box position='0 0.5 0' material='color: yellow;'></a-box>
+    <!-- Pattern ration is very important!!! If markers patternRatio is different, then ar.js won't recognize the pattern! -->
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; patternRatio: 0.7;" stats>
+
+
+        <a-marker type='pattern' url="dist/assets/patterns/8029f6a28aadd76740f4c3d7ece0f9b1.patt" registerevents>
+
+            <a-torus-knot radius='0.26' radius-tubular='0.05'
+                animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true" material="color:red">
+            </a-torus-knot>
         </a-marker>
+
+        <a-marker type='pattern' url="dist/assets/patterns/c1ae82bc2b8a23e549c07a70705a533c.patt" registerevents>
+            <a-torus-knot radius='0.26' radius-tubular='0.05'
+                animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
+            </a-torus-knot>
+        </a-marker>
+
         <a-entity camera></a-entity>
+
     </a-scene>
-   
+
     <!-- <canvas id="canvas"></canvas> -->
-    <!-- <img src="./../../markers/hiro.png" alt="hiro" id="img"> -->
-<script type="text/javascript" src="dist/vendors~main.vendor.bundle.js"></script>
-<script type="text/javascript" src="dist/main.bundle.js"></script></body>
+    <!-- <img src="./../../assets/markers/hiro.png" alt="hiro" id="img"> -->
+    <script type="text/javascript" src="dist/vendors~main.vendor.bundle.js"></script>
+    <script type="text/javascript" src="dist/main.bundle.js"></script>
+</body>
 
 </html>

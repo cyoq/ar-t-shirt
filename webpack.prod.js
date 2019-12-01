@@ -29,21 +29,28 @@ module.exports = {
             use: {
               loader:'file-loader',
               options: {
+                outputPath: "assets/images/" 
               }
             }
           },
           {
             // HTML LOADER
             test: /\.html$/,
-            use:[
-              'html-loader'
-            ]
+            use:{
+              loader: 'html-loader',
+              options: {
+                interpolate: true,
+              }
+            } 
           },
           {
-            test: /\.patt$/,
-            use: [
-              'file-loader',
-            ]
+            test: /\.patt$/i,
+            use: {
+              loader: 'file-loader',
+              options: {
+                outputPath: "assets/patterns/" 
+              }
+            }
           },
           {
             test: /\.dat$/,
@@ -63,7 +70,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: "AR bundle",
             template: "./src/templates/index.html",
-            filename: "./../index.html"
+            filename: "./../index.html",
+            inject: true,
         }),
         new HtmlWebpackInjector(),
         new HtmlWebpackInjectPlugin({

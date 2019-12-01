@@ -8370,9 +8370,11 @@ AFRAME.registerComponent('arjs-anchor', {
                 }
             } else if (_this.data.type === 'pattern') {
                 markerParameters.type = _this.data.type
-                markerParameters.patternUrl = _this.data.patternUrl;
+				markerParameters.patternUrl = _this.data.patternUrl;
+				console.log("url " + markerParameters.patternUrl);
                 markerParameters.markersAreaEnabled = false
-            } else {
+			}
+			else {
                 // console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
             }
 

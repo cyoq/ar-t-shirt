@@ -6,7 +6,6 @@ const HtmlWebpackInjectPlugin = require('html-webpack-inject-plugin').default;
 const HtmlWebpackInjector = require('html-webpack-injector');
 
 
-
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
@@ -20,7 +19,7 @@ module.exports = {
     chunkFilename: '[name].vendor.bundle.js',
     publicPath: '/',
   },
- 
+
   module: {
     rules: [
       {
@@ -31,23 +30,33 @@ module.exports = {
         //IMAGE LOADER
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: {
-          loader:'file-loader',
+          loader: 'file-loader',
           options: {
+            outputPath: "assets/images/"
           }
         }
       },
       {
         // HTML LOADER
         test: /\.html$/,
-        use:[
-          'html-loader'
-        ]
+        use: [
+          {
+            loader: 'html-loader',
+            options: {
+              interpolate: true,
+            }
+          }
+        ],
+
       },
       {
-        test: /\.patt$/,
-        use: [
-          'file-loader',
-        ]
+        test: /\.patt$/i,
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: "assets/patterns/"
+          }
+        }
       },
       {
         test: /\.dat$/,
@@ -92,11 +101,11 @@ module.exports = {
             type: 'text/javascript'
           }
         }
-        
+
       ],
       parent: 'head', // default is head
       prepend: false // default is false
     }),
   ],
-  node: {fs: 'empty'}, 
+  node: { fs: 'empty' },
 };
