@@ -11,21 +11,30 @@
 
 <body>
 
-    <!-- Pattern ration is very important!!! If markers patternRatio is different, then ar.js won't recognize the pattern! -->
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; patternRatio: 0.7;"  stats>
 
-        
-        <!-- <a-marker  type='pattern' url="dist/assets/patterns/8029f6a28aadd76740f4c3d7ece0f9b1.patt" registerevents listener>
-                    
-                <a-torus-knot radius='0.26' radius-tubular='0.05'
-                    animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true" material="color:red">
-                </a-torus-knot>
-        </a-marker> -->
-        
-        <a-marker type='pattern' url="dist/assets/patterns/c1ae82bc2b8a23e549c07a70705a533c.patt" registerevents listener>
+
+    <!-- Pattern ration is very important!!! If markers patternRatio is different, then ar.js won't recognize the pattern! -->
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; patternRatio: 0.7;" stats>
+
+        <a-assets>
+            <a-asset-item id="cube" src="dist/assets/models/7be593d692ab458c441aed10fad82443.glb"></a-asset-item>
+        </a-assets>
+
+
+        <!-- <a-marker type='pattern' url="dist/assets/patterns/c1ae82bc2b8a23e549c07a70705a533c.patt"
+            registerevents listener>
             <a-torus-knot radius='0.26' radius-tubular='0.05'
                 animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
-                </a-torus-knot>
+            </a-torus-knot>
+        </a-marker> -->
+
+        <a-marker type='pattern' url="dist/assets/patterns/c1ae82bc2b8a23e549c07a70705a533c.patt"
+            registerevents listener>
+
+            <a-entity gltf-model="#cube"
+                animation="property: rotation; to:0 360 0; dur: 10000; easing: linear; loop: true" position="0 -0.1 0">
+            </a-entity>
+
         </a-marker>
 
         <a-entity camera></a-entity>

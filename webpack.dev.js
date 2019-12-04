@@ -59,6 +59,15 @@ module.exports = {
         }
       },
       {
+        test: /\.glb$/i,
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: "assets/models/"
+          }
+        }
+      },
+      {
         test: /\.dat$/,
         use: [
           'file-loader',
