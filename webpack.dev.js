@@ -4,14 +4,14 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInjectPlugin = require('html-webpack-inject-plugin').default;
 const HtmlWebpackInjector = require('html-webpack-injector');
-
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
   entry: {
-    main: path.resolve(__dirname, 'src/app/index.js'),
-    aframe_head: path.resolve(__dirname, 'src/app/aframe_import.js')
+    main: path.resolve(__dirname, 'src/js/index.js'),
+    aframe_head: path.resolve(__dirname, 'src/js/aframe_import.js')
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -101,12 +101,13 @@ module.exports = {
       template: "./src/templates/index.html",
     }),
     new HtmlWebpackInjector(),
+    
     new HtmlWebpackInjectPlugin({
       externals: [
         {
           tag: 'script',
           attrs: {
-            src: './app/libs/aframe-ar.js',
+            src: './js/libs/aframe-ar.js',
             type: 'text/javascript'
           }
         }

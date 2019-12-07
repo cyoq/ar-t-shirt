@@ -4,12 +4,14 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInjectPlugin = require('html-webpack-inject-plugin').default;
 const HtmlWebpackInjector = require('html-webpack-injector');
+const CopyPlugin = require('copy-webpack-plugin');
+const UglifyJS = require("uglify-es");
 
 module.exports = {
     mode: 'production',
     entry: {
-      main: path.resolve(__dirname, 'src/app/index.js'),
-      aframe_head: path.resolve(__dirname, 'src/app/aframe_import.js')
+      main: path.resolve(__dirname, 'src/js/index.js'),
+      aframe_head: path.resolve(__dirname, 'src/js/aframe_import.js')
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -83,12 +85,21 @@ module.exports = {
             inject: true,
         }),
         new HtmlWebpackInjector(),
+        new CopyPlugin([
+          { 
+            from: './src/js/libs/', 
+            to: './libs/', 
+            transform: function (content, path) {               
+              return UglifyJS.minify(content.toString()).code;  
+            },    
+          },
+        ]),
         new HtmlWebpackInjectPlugin({
           externals: [
             {
               tag: 'script',
               attrs: {
-                src: './src/app/libs/aframe-ar.js',
+                src: './dist/libs/aframe-ar.js',
                 type: 'text/javascript'
               }
             }
