@@ -16,7 +16,7 @@
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; patternRatio: 0.7;" stats>
 
         <a-assets>
-            <a-asset-item id="cube" src="dist/assets/models/7be593d692ab458c441aed10fad82443.glb"></a-asset-item>
+            <a-asset-item id="cube" src="dist/assets/models/0b373a6b3a910b3a7bf972e7445b1e60.glb"></a-asset-item>
         </a-assets>
 
 
@@ -27,9 +27,9 @@
             </a-torus-knot>
         </a-marker> -->
 
-        <a-marker type='pattern' url="dist/assets/patterns/2891a58c7506e979374826d60e7fde2a.patt"
-            registerevents listener>
-
+        <a-marker type='pattern' url="dist/assets/patterns/2891a58c7506e979374826d60e7fde2a.patt" listener>
+            <a-entity light="type: ambient; color: #BBB"></a-entity>
+            <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
             <a-entity gltf-model="#cube"
                 animation="property: rotation; to:0 360 0; dur: 10000; easing: linear; loop: true" position="0 -0.1 0">
             </a-entity>

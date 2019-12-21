@@ -27,9 +27,9 @@
             </a-torus-knot>
         </a-marker> -->
 
-        <a-marker type='pattern' url="${require(`./../../assets/data/patterns/pattern-fascinated-white.patt`)}"
-            registerevents listener>
-
+        <a-marker type='pattern' url="${require(`./../../assets/data/patterns/pattern-fascinated-white.patt`)}" listener>
+            <a-entity light="type: ambient; color: #BBB"></a-entity>
+            <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
             <a-entity gltf-model="#cube"
                 animation="property: rotation; to:0 360 0; dur: 10000; easing: linear; loop: true" position="0 -0.1 0">
             </a-entity>
