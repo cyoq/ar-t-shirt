@@ -20,18 +20,12 @@
         </a-assets>
 
 
-        <!-- <a-marker type='pattern' url="dist/assets/patterns/2891a58c7506e979374826d60e7fde2a.patt"
-            registerevents listener>
-            <a-torus-knot radius='0.26' radius-tubular='0.05'
-                animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
-            </a-torus-knot>
-        </a-marker> -->
-
         <a-marker type='pattern' url="dist/assets/patterns/2891a58c7506e979374826d60e7fde2a.patt" listener>
             <a-entity light="type: ambient; color: #BBB"></a-entity>
             <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
             <a-entity gltf-model="#cube"
                 animation="property: rotation; to:0 360 0; dur: 10000; easing: linear; loop: true" position="0 -0.1 0">
+                <a-animation attribute="color" to="#000" dur="2000" repeat="Infinity" easing="ease-in-out-bounce">
             </a-entity>
 
         </a-marker>
