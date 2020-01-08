@@ -11,7 +11,7 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: {
     main: path.resolve(__dirname, 'src/js/index.js'),
-    aframe_head: path.resolve(__dirname, 'src/js/aframe_import.js')
+    head_head: path.resolve(__dirname, 'src/js/head.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -69,9 +69,12 @@ module.exports = {
       },
       {
         test: /\.dat$/,
-        use: [
-          'file-loader',
-        ]
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: "assets/data/"
+          }
+        }
       }
     ]
   },
@@ -104,14 +107,55 @@ module.exports = {
     
     new HtmlWebpackInjectPlugin({
       externals: [
+        // {
+        //   tag: 'script',
+        //   attrs: {
+        //     src: './third_party/ar.js',
+        //     type: 'text/javascript'
+        //   }
+        // },
         {
           tag: 'script',
           attrs: {
-            src: './js/libs/aframe-ar.js',
+            src: './third_party/jsartoolkit5/artoolkit.min.js',
             type: 'text/javascript'
           }
-        }
-
+        },
+        {
+          tag: 'script',
+          attrs: {
+            src: './third_party/jsartoolkit5/artoolkit.api.js',
+            type: 'text/javascript'
+          }
+        },
+        {
+          tag: 'script',
+          attrs: {
+            src: './third_party/threex/threex-artoolkitsource.js',
+            type: 'text/javascript'
+          }
+        },
+        {
+          tag: 'script',
+          attrs: {
+            src: './third_party/threex/threex-artoolkitcontext.js',
+            type: 'text/javascript'
+          }
+        },
+        {
+          tag: 'script',
+          attrs: {
+            src: './third_party/threex/threex-arbasecontrols.js',
+            type: 'text/javascript'
+          }
+        },
+        {
+          tag: 'script',
+          attrs: {
+            src: './third_party/threex/threex-armarkercontrols.js',
+            type: 'text/javascript'
+          }
+        },
       ],
       parent: 'head', // default is head
       prepend: false // default is false

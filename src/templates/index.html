@@ -8,31 +8,8 @@
     <title>ARjs marker on a t-shirt</title>
 </head>
 
-<body>
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
 
-
-
-    <!-- Pattern ration is very important!!! If markers patternRatio is different, then ar.js won't recognize the pattern! -->
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; patternRatio: 0.7;" stats>
-
-        <a-assets>
-            <a-asset-item id="cube" src="${require(`./../../assets/models/broken_cube.glb`)}"></a-asset-item>
-        </a-assets>
-
-
-        <a-marker type='pattern' url="${require(`./../../assets/data/patterns/pattern-fascinated-white.patt`)}" listener>
-            <a-entity light="type: ambient; color: #BBB"></a-entity>
-            <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
-            <a-entity gltf-model="#cube"
-                animation="property: rotation; to:0 360 0; dur: 10000; easing: linear; loop: true" position="0 -0.1 0">
-                <a-animation attribute="color" to="#000" dur="2000" repeat="Infinity" easing="ease-in-out-bounce">
-            </a-entity>
-
-        </a-marker>
-
-        <a-entity camera></a-entity>
-
-    </a-scene>
 
     <!-- <canvas id="canvas"></canvas> -->
     <!-- <img src="./../../assets/markers/hiro.png" alt="hiro" id="img"> -->
