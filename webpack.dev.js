@@ -107,55 +107,55 @@ module.exports = {
     
     new HtmlWebpackInjectPlugin({
       externals: [
+        {
+          tag: 'script',
+          attrs: {
+            src: './third_party/ar.js',
+            type: 'text/javascript'
+          }
+        },
         // {
         //   tag: 'script',
         //   attrs: {
-        //     src: './third_party/ar.js',
+        //     src: './third_party/jsartoolkit5/artoolkit.min.js',
         //     type: 'text/javascript'
         //   }
         // },
-        {
-          tag: 'script',
-          attrs: {
-            src: './third_party/jsartoolkit5/artoolkit.min.js',
-            type: 'text/javascript'
-          }
-        },
-        {
-          tag: 'script',
-          attrs: {
-            src: './third_party/jsartoolkit5/artoolkit.api.js',
-            type: 'text/javascript'
-          }
-        },
-        {
-          tag: 'script',
-          attrs: {
-            src: './third_party/threex/threex-artoolkitsource.js',
-            type: 'text/javascript'
-          }
-        },
-        {
-          tag: 'script',
-          attrs: {
-            src: './third_party/threex/threex-artoolkitcontext.js',
-            type: 'text/javascript'
-          }
-        },
-        {
-          tag: 'script',
-          attrs: {
-            src: './third_party/threex/threex-arbasecontrols.js',
-            type: 'text/javascript'
-          }
-        },
-        {
-          tag: 'script',
-          attrs: {
-            src: './third_party/threex/threex-armarkercontrols.js',
-            type: 'text/javascript'
-          }
-        },
+        // {
+        //   tag: 'script',
+        //   attrs: {
+        //     src: './third_party/jsartoolkit5/artoolkit.api.js',
+        //     type: 'text/javascript'
+        //   }
+        // },
+        // {
+        //   tag: 'script',
+        //   attrs: {
+        //     src: './third_party/threex/threex-artoolkitsource.js',
+        //     type: 'text/javascript'
+        //   }
+        // },
+        // {
+        //   tag: 'script',
+        //   attrs: {
+        //     src: './third_party/threex/threex-artoolkitcontext.js',
+        //     type: 'text/javascript'
+        //   }
+        // },
+        // {
+        //   tag: 'script',
+        //   attrs: {
+        //     src: './third_party/threex/threex-arbasecontrols.js',
+        //     type: 'text/javascript'
+        //   }
+        // },
+        // {
+        //   tag: 'script',
+        //   attrs: {
+        //     src: './third_party/threex/threex-armarkercontrols.js',
+        //     type: 'text/javascript'
+        //   }
+        // },
       ],
       parent: 'head', // default is head
       prepend: false // default is false

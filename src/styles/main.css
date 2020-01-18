@@ -1,11 +1,18 @@
 
-#canvas {
+/* #canvas {
     width: 350px;
     height: 260px;
     margin: 0 auto;
     display: block;
-}
+} */
+
 
 p {
     color:red;
+}
+
+html, body {
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
 }
