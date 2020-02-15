@@ -19,158 +19,157 @@ const Utils = {
     }
 };
 
-var renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true,
-});
+var scene, camera, renderer, clock, deltaTime, totalTime;
 
+var arToolkitSource, arToolkitContext;
 
-renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-const pixelRatio = window.devicePixelRatio | 0;
-renderer.setPixelRatio(pixelRatio);
-var height = Math.max(0, window.screen.innerHeight || document.body.clientHeight || document.documentElement.clientHeight || 0);
-renderer.setSize(640, 480);
-renderer.domElement.style.position = 'absolute'
-// renderer.domElement.style.display = 'block';
-// renderer.domElement.style.width = '100%';
-// renderer.domElement.style.height = '100%';
-renderer.domElement.style.top = '0px'
-renderer.domElement.style.left = '0px'
-document.body.appendChild(renderer.domElement);
+var markerRoot1, markerRoot2;
 
-window.r = renderer;
+var mesh1;
 
-// array of functions for the rendering loop
 var onRenderFcts = [];
 
-// init scene and camera
-var scene = new THREE.Scene();
+initialize();
+// animate();
 
-//////////////////////////////////////////////////////////////////////////////////
-//		Initialize a basic camera
-//////////////////////////////////////////////////////////////////////////////////
+function initialize() {
+    scene = new THREE.Scene();
 
-// Create a camera
-var camera = new THREE.Camera();
-scene.add(camera);
+    let ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
+    scene.add(ambientLight);
 
+    camera = new THREE.Camera();
+    scene.add(camera);
 
-var arToolkitSource = new THREEx.ArToolkitSource({
-    // to read from the webcam
-    sourceType: 'webcam',
-})
+    renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+    });
+    renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+    renderer.setSize(640, 480);
+    renderer.domElement.style.position = 'absolute'
+    renderer.domElement.style.top = '0px'
+    renderer.domElement.style.left = '0px'
+    document.body.appendChild(renderer.domElement);
 
-function onResize() {
-    arToolkitSource.onResizeElement();
-    arToolkitSource.copyElementSizeTo(renderer.domElement);
-    if (arToolkitContext.arController !== null) {
-        console.log("called");
-        arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+    clock = new THREE.Clock();
+    deltaTime = 0;
+    totalTime = 0;
+
+    ////////////////////////////////////////////////////////////
+    // setup arToolkitSource
+    ////////////////////////////////////////////////////////////
+
+    arToolkitSource = new THREEx.ArToolkitSource({
+        sourceType: 'webcam',
+    });
+
+    function onResize() {
+        arToolkitSource.onResizeElement()
+        arToolkitSource.copyElementSizeTo(renderer.domElement)
+        if (arToolkitContext.arController !== null) {
+            arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+        }
     }
+
+    arToolkitSource.init(function onReady() {
+        onResize()
+    });
+
+    // handle resize event
+    window.addEventListener('resize', function () {
+        onResize()
+    });
+
+    ////////////////////////////////////////////////////////////
+    // setup arToolkitContext
+    ////////////////////////////////////////////////////////////	
+
+    // create atToolkitContext
+    arToolkitContext = new THREEx.ArToolkitContext({
+        cameraParametersUrl: CameraData,
+        detectionMode: 'mono',
+        patternRatio: 0.7,
+    });
+
+    // copy projection matrix to camera when initialization complete
+    arToolkitContext.init(function onCompleted() {
+        camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
+    });
+
+    ////////////////////////////////////////////////////////////
+    // setup markerRoots
+    ////////////////////////////////////////////////////////////
+
+    // build markerControls
+    markerRoot1 = new THREE.Group();
+    scene.add(markerRoot1);
+    let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
+        type: 'pattern', patternUrl: Pattern,
+    })
+
+    var smoothedRoot = new THREE.Group()
+    scene.add(smoothedRoot);
+    var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+        lerpPosition: 0.4,
+        lerpQuaternion: 0.3,
+        lerpScale: 1,
+    });
+
+    onRenderFcts.push(function (delta) {
+        smoothedControls.update(markerRoot1)
+    })
+
+    // // add a torus knot
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshNormalMaterial({
+        transparent: true,
+        opacity: 0.5,
+        side: THREE.DoubleSide
+    });
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.position.y = geometry.parameters.height / 2
+    smoothedRoot.add(mesh);
+
+    var geometry = new THREE.TorusKnotGeometry(0.3, 0.1, 64, 16);
+    var material = new THREE.MeshNormalMaterial();
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.position.y = 0.5
+    smoothedRoot.add(mesh);
+
+    onRenderFcts.push(function () {
+        mesh.rotation.x += 0.1
+    })
+
 }
 
 
-arToolkitSource.init(function onReady() {
-    onResize()
-})
+function update() {
+    // update artoolkit on every frame
+    if (arToolkitSource.ready !== false)
+        arToolkitContext.update(arToolkitSource.domElement);
+}
 
 
-
-// handle resize
-window.addEventListener('resize', function () {
-    onResize()
-})
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-//          initialize arToolkitContext
-////////////////////////////////////////////////////////////////////////////////
-
-
-// create atToolkitContext
-var arToolkitContext = new THREEx.ArToolkitContext({
-    cameraParametersUrl: CameraData,
-    patternRatio: 0.7,
-    detectionMode: 'mono',
-    maxDetectionRate: 60,
-    canvasWidth: 80 * 3,
-    canvasHeight: 60 * 3,
-    
-})
-// initialize it
-arToolkitContext.init(function onCompleted() {
-    camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
-})
-
-// update artoolkit on every frame
-onRenderFcts.push(function () {
-    if (arToolkitSource.ready === false) return
-
-    arToolkitContext.update(arToolkitSource.domElement)
-})
-
-
-////////////////////////////////////////////////////////////////////////////////
-//          Create a ArMarkerControls
-////////////////////////////////////////////////////////////////////////////////
-
-var markerRoot = new THREE.Group();
-scene.add(markerRoot)
-var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-    type: 'pattern',
-    patternUrl: Pattern
-})
-
-// build a smoothedControls
-var smoothedRoot = new THREE.Group()
-scene.add(smoothedRoot)
-var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-    lerpPosition: 0.4,
-    lerpQuaternion: 0.3,
-    lerpScale: 1,
-})
-onRenderFcts.push(function (delta) {
-    smoothedControls.update(markerRoot)
-})
-//////////////////////////////////////////////////////////////////////////////////
-//		add an object in the scene
-//////////////////////////////////////////////////////////////////////////////////
-
-var arWorldRoot = smoothedRoot
-
-// add a torus knot
-var geometry = new THREE.BoxGeometry(1, 1, 1);
-var material = new THREE.MeshNormalMaterial({
-    transparent: true,
-    opacity: 0.5,
-    side: THREE.DoubleSide
-});
-var mesh = new THREE.Mesh(geometry, material);
-mesh.position.y = geometry.parameters.height / 2
-arWorldRoot.add(mesh);
-
-var geometry = new THREE.TorusKnotGeometry(0.3, 0.1, 64, 16);
-var material = new THREE.MeshNormalMaterial();
-var mesh = new THREE.Mesh(geometry, material);
-mesh.position.y = 0.5
-arWorldRoot.add(mesh);
-
-onRenderFcts.push(function () {
-    mesh.rotation.x += 0.1
-})
-
-
-// render the scene
-onRenderFcts.push(function () {
+function render() {
     renderer.render(scene, camera);
-})
+}
 
-// run the rendering loop
+
+function animate() {
+    requestAnimationFrame(animate);
+    deltaTime = clock.getDelta();
+    totalTime += deltaTime;
+    update();
+    render();
+}
+
 var lastTimeMsec = null
 requestAnimationFrame(function animate(nowMsec) {
     // keep looping
     requestAnimationFrame(animate);
+    update();
+    render();
 
     // measure time
     lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60
@@ -181,15 +180,3 @@ requestAnimationFrame(function animate(nowMsec) {
         onRenderFct(deltaMsec / 1000, nowMsec / 1000)
     })
 })
-
-function resizeRendererToDisplaySize(renderer) {
-    const canvas = renderer.domElement;
-    const pixelRatio = window.devicePixelRatio;
-    const width = canvas.clientWidth * pixelRatio | 0;
-    const height = canvas.clientHeight * pixelRatio | 0;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-        renderer.setSize(width, height, false);
-    }
-    return needResize;
-}
